@@ -1,0 +1,704 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RedeSocialModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comentarios">
+          <Key>
+            <PropertyRef Name="idComentario" />
+          </Key>
+          <Property Name="idComentario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idpublicacao" Type="int" Nullable="false" />
+          <Property Name="idUtilizador" Type="int" Nullable="false" />
+          <Property Name="comentario" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="estado" Type="int" />
+          <Property Name="dataComentario" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Contactos">
+          <Key>
+            <PropertyRef Name="id_contacto" />
+          </Key>
+          <Property Name="id_contacto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_perfilUser" Type="int" Nullable="false" />
+          <Property Name="tlm" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Grupos">
+          <Key>
+            <PropertyRef Name="idGrupo" />
+          </Key>
+          <Property Name="idGrupo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_criador" Type="int" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="250" />
+          <Property Name="desc" Type="varchar" MaxLength="250" />
+          <Property Name="estado" Type="int" />
+          <Property Name="data_criacao" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GrupoUtilizadores">
+          <Key>
+            <PropertyRef Name="id_grupo" />
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_grupo" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="tipo" Type="int" Nullable="false" />
+          <Property Name="data" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Mural">
+          <Key>
+            <PropertyRef Name="idMural" />
+          </Key>
+          <Property Name="idMural" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_utilizador" Type="int" />
+          <Property Name="id_grupo" Type="int" />
+          <Property Name="tipo" Type="int" />
+        </EntityType>
+        <EntityType Name="Perfil_Utilizador">
+          <Key>
+            <PropertyRef Name="id_Perfil" />
+          </Key>
+          <Property Name="id_Perfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="250" />
+          <Property Name="lastname" Type="varchar" MaxLength="250" />
+          <Property Name="genero" Type="int" />
+          <Property Name="dataNasc" Type="datetime" Nullable="false" />
+          <Property Name="estado" Type="int" />
+          <Property Name="website" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Publicacoes">
+          <Key>
+            <PropertyRef Name="id_publicacao" />
+          </Key>
+          <Property Name="id_publicacao" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_mural" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="desc" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="estado" Type="int" />
+          <Property Name="data_publicacoes" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Utilizadores">
+          <Key>
+            <PropertyRef Name="IdUtilizador" />
+          </Key>
+          <Property Name="IdUtilizador" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="250" />
+          <Property Name="email" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="email_confirmacao" Type="varchar" MaxLength="250" />
+          <Property Name="pass" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="data_registo" Type="datetime2" Precision="7" />
+          <Property Name="tipo_utilizador" Type="int" />
+          <Property Name="status" Type="int" />
+        </EntityType>
+        <Association Name="FK__Comentari__idpub__38996AB5">
+          <End Role="Publicacoes" Type="Self.Publicacoes" Multiplicity="1" />
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publicacoes">
+              <PropertyRef Name="id_publicacao" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="idpublicacao" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__idUti__440B1D61">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="idUtilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Contactos__id_pe__32E0915F">
+          <End Role="Perfil_Utilizador" Type="Self.Perfil_Utilizador" Multiplicity="1" />
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil_Utilizador">
+              <PropertyRef Name="id_Perfil" />
+            </Principal>
+            <Dependent Role="Contactos">
+              <PropertyRef Name="id_perfilUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grupos__id_criad__412EB0B6">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Grupos" Type="Self.Grupos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Grupos">
+              <PropertyRef Name="id_criador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GrupoUtil__id_gr__34C8D9D1">
+          <End Role="Grupos" Type="Self.Grupos" Multiplicity="1" />
+          <End Role="GrupoUtilizadores" Type="Self.GrupoUtilizadores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupos">
+              <PropertyRef Name="idGrupo" />
+            </Principal>
+            <Dependent Role="GrupoUtilizadores">
+              <PropertyRef Name="id_grupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GrupoUtil__id_us__4222D4EF">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="GrupoUtilizadores" Type="Self.GrupoUtilizadores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="GrupoUtilizadores">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mural__id_grupo__3B75D760">
+          <End Role="Grupos" Type="Self.Grupos" Multiplicity="0..1" />
+          <End Role="Mural" Type="Self.Mural" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupos">
+              <PropertyRef Name="idGrupo" />
+            </Principal>
+            <Dependent Role="Mural">
+              <PropertyRef Name="id_grupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mural__id_utiliz__44FF419A">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="0..1" />
+          <End Role="Mural" Type="Self.Mural" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Mural">
+              <PropertyRef Name="id_utilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Perfil_Ut__id_us__403A8C7D">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Perfil_Utilizador" Type="Self.Perfil_Utilizador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Perfil_Utilizador">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Publicaco__id_mu__36B12243">
+          <End Role="Mural" Type="Self.Mural" Multiplicity="1" />
+          <End Role="Publicacoes" Type="Self.Publicacoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mural">
+              <PropertyRef Name="idMural" />
+            </Principal>
+            <Dependent Role="Publicacoes">
+              <PropertyRef Name="id_mural" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Publicaco__id_us__4316F928">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Publicacoes" Type="Self.Publicacoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Publicacoes">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RedeSocialModelStoreContainer">
+          <EntitySet Name="Comentarios" EntityType="Self.Comentarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contactos" EntityType="Self.Contactos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grupos" EntityType="Self.Grupos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GrupoUtilizadores" EntityType="Self.GrupoUtilizadores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mural" EntityType="Self.Mural" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Perfil_Utilizador" EntityType="Self.Perfil_Utilizador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Publicacoes" EntityType="Self.Publicacoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utilizadores" EntityType="Self.Utilizadores" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Comentari__idpub__38996AB5" Association="Self.FK__Comentari__idpub__38996AB5">
+            <End Role="Publicacoes" EntitySet="Publicacoes" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__idUti__440B1D61" Association="Self.FK__Comentari__idUti__440B1D61">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Contactos__id_pe__32E0915F" Association="Self.FK__Contactos__id_pe__32E0915F">
+            <End Role="Perfil_Utilizador" EntitySet="Perfil_Utilizador" />
+            <End Role="Contactos" EntitySet="Contactos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grupos__id_criad__412EB0B6" Association="Self.FK__Grupos__id_criad__412EB0B6">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Grupos" EntitySet="Grupos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GrupoUtil__id_gr__34C8D9D1" Association="Self.FK__GrupoUtil__id_gr__34C8D9D1">
+            <End Role="Grupos" EntitySet="Grupos" />
+            <End Role="GrupoUtilizadores" EntitySet="GrupoUtilizadores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GrupoUtil__id_us__4222D4EF" Association="Self.FK__GrupoUtil__id_us__4222D4EF">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="GrupoUtilizadores" EntitySet="GrupoUtilizadores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mural__id_grupo__3B75D760" Association="Self.FK__Mural__id_grupo__3B75D760">
+            <End Role="Grupos" EntitySet="Grupos" />
+            <End Role="Mural" EntitySet="Mural" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mural__id_utiliz__44FF419A" Association="Self.FK__Mural__id_utiliz__44FF419A">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Mural" EntitySet="Mural" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Perfil_Ut__id_us__403A8C7D" Association="Self.FK__Perfil_Ut__id_us__403A8C7D">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Perfil_Utilizador" EntitySet="Perfil_Utilizador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Publicaco__id_mu__36B12243" Association="Self.FK__Publicaco__id_mu__36B12243">
+            <End Role="Mural" EntitySet="Mural" />
+            <End Role="Publicacoes" EntitySet="Publicacoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Publicaco__id_us__4316F928" Association="Self.FK__Publicaco__id_us__4316F928">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Publicacoes" EntitySet="Publicacoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RedeSocialModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comentarios">
+          <Key>
+            <PropertyRef Name="idComentario" />
+          </Key>
+          <Property Name="idComentario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idpublicacao" Type="Int32" Nullable="false" />
+          <Property Name="idUtilizador" Type="Int32" Nullable="false" />
+          <Property Name="comentario" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="dataComentario" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Publicacoes" Relationship="Self.FK__Comentari__idpub__38996AB5" FromRole="Comentarios" ToRole="Publicacoes" />
+          <NavigationProperty Name="Utilizadores" Relationship="Self.FK__Comentari__idUti__440B1D61" FromRole="Comentarios" ToRole="Utilizadores" />
+        </EntityType>
+        <EntityType Name="Contactos">
+          <Key>
+            <PropertyRef Name="id_contacto" />
+          </Key>
+          <Property Name="id_contacto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_perfilUser" Type="Int32" Nullable="false" />
+          <Property Name="tlm" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Perfil_Utilizador" Relationship="Self.FK__Contactos__id_pe__32E0915F" FromRole="Contactos" ToRole="Perfil_Utilizador" />
+        </EntityType>
+        <EntityType Name="Grupos">
+          <Key>
+            <PropertyRef Name="idGrupo" />
+          </Key>
+          <Property Name="idGrupo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_criador" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="desc" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="data_criacao" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Utilizadores" Relationship="Self.FK__Grupos__id_criad__412EB0B6" FromRole="Grupos" ToRole="Utilizadores" />
+          <NavigationProperty Name="GrupoUtilizadores" Relationship="Self.FK__GrupoUtil__id_gr__34C8D9D1" FromRole="Grupos" ToRole="GrupoUtilizadores" />
+          <NavigationProperty Name="Mural" Relationship="Self.FK__Mural__id_grupo__3B75D760" FromRole="Grupos" ToRole="Mural" />
+        </EntityType>
+        <EntityType Name="GrupoUtilizadores">
+          <Key>
+            <PropertyRef Name="id_grupo" />
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_grupo" Type="Int32" Nullable="false" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="tipo" Type="Int32" Nullable="false" />
+          <Property Name="data" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Grupos" Relationship="Self.FK__GrupoUtil__id_gr__34C8D9D1" FromRole="GrupoUtilizadores" ToRole="Grupos" />
+          <NavigationProperty Name="Utilizadores" Relationship="Self.FK__GrupoUtil__id_us__4222D4EF" FromRole="GrupoUtilizadores" ToRole="Utilizadores" />
+        </EntityType>
+        <EntityType Name="Mural">
+          <Key>
+            <PropertyRef Name="idMural" />
+          </Key>
+          <Property Name="idMural" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_utilizador" Type="Int32" />
+          <Property Name="id_grupo" Type="Int32" />
+          <Property Name="tipo" Type="Int32" />
+          <NavigationProperty Name="Grupos" Relationship="Self.FK__Mural__id_grupo__3B75D760" FromRole="Mural" ToRole="Grupos" />
+          <NavigationProperty Name="Utilizadores" Relationship="Self.FK__Mural__id_utiliz__44FF419A" FromRole="Mural" ToRole="Utilizadores" />
+          <NavigationProperty Name="Publicacoes" Relationship="Self.FK__Publicaco__id_mu__36B12243" FromRole="Mural" ToRole="Publicacoes" />
+        </EntityType>
+        <EntityType Name="Perfil_Utilizador">
+          <Key>
+            <PropertyRef Name="id_Perfil" />
+          </Key>
+          <Property Name="id_Perfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="firstname" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="genero" Type="Int32" />
+          <Property Name="dataNasc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="website" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Contactos" Relationship="Self.FK__Contactos__id_pe__32E0915F" FromRole="Perfil_Utilizador" ToRole="Contactos" />
+          <NavigationProperty Name="Utilizadores" Relationship="Self.FK__Perfil_Ut__id_us__403A8C7D" FromRole="Perfil_Utilizador" ToRole="Utilizadores" />
+        </EntityType>
+        <EntityType Name="Publicacoes">
+          <Key>
+            <PropertyRef Name="id_publicacao" />
+          </Key>
+          <Property Name="id_publicacao" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_mural" Type="Int32" Nullable="false" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="desc" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="data_publicacoes" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Comentarios" Relationship="Self.FK__Comentari__idpub__38996AB5" FromRole="Publicacoes" ToRole="Comentarios" />
+          <NavigationProperty Name="Mural" Relationship="Self.FK__Publicaco__id_mu__36B12243" FromRole="Publicacoes" ToRole="Mural" />
+          <NavigationProperty Name="Utilizadores" Relationship="Self.FK__Publicaco__id_us__4316F928" FromRole="Publicacoes" ToRole="Utilizadores" />
+        </EntityType>
+        <EntityType Name="Utilizadores">
+          <Key>
+            <PropertyRef Name="IdUtilizador" />
+          </Key>
+          <Property Name="IdUtilizador" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email_confirmacao" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="pass" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="data_registo" Type="DateTime" Precision="7" />
+          <Property Name="tipo_utilizador" Type="Int32" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="Comentarios" Relationship="Self.FK__Comentari__idUti__440B1D61" FromRole="Utilizadores" ToRole="Comentarios" />
+          <NavigationProperty Name="Grupos" Relationship="Self.FK__Grupos__id_criad__412EB0B6" FromRole="Utilizadores" ToRole="Grupos" />
+          <NavigationProperty Name="GrupoUtilizadores" Relationship="Self.FK__GrupoUtil__id_us__4222D4EF" FromRole="Utilizadores" ToRole="GrupoUtilizadores" />
+          <NavigationProperty Name="Mural" Relationship="Self.FK__Mural__id_utiliz__44FF419A" FromRole="Utilizadores" ToRole="Mural" />
+          <NavigationProperty Name="Perfil_Utilizador" Relationship="Self.FK__Perfil_Ut__id_us__403A8C7D" FromRole="Utilizadores" ToRole="Perfil_Utilizador" />
+          <NavigationProperty Name="Publicacoes" Relationship="Self.FK__Publicaco__id_us__4316F928" FromRole="Utilizadores" ToRole="Publicacoes" />
+        </EntityType>
+        <Association Name="FK__Comentari__idpub__38996AB5">
+          <End Role="Publicacoes" Type="Self.Publicacoes" Multiplicity="1" />
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publicacoes">
+              <PropertyRef Name="id_publicacao" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="idpublicacao" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__idUti__440B1D61">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="idUtilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Contactos__id_pe__32E0915F">
+          <End Role="Perfil_Utilizador" Type="Self.Perfil_Utilizador" Multiplicity="1" />
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil_Utilizador">
+              <PropertyRef Name="id_Perfil" />
+            </Principal>
+            <Dependent Role="Contactos">
+              <PropertyRef Name="id_perfilUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grupos__id_criad__412EB0B6">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Grupos" Type="Self.Grupos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Grupos">
+              <PropertyRef Name="id_criador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GrupoUtil__id_gr__34C8D9D1">
+          <End Role="Grupos" Type="Self.Grupos" Multiplicity="1" />
+          <End Role="GrupoUtilizadores" Type="Self.GrupoUtilizadores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupos">
+              <PropertyRef Name="idGrupo" />
+            </Principal>
+            <Dependent Role="GrupoUtilizadores">
+              <PropertyRef Name="id_grupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mural__id_grupo__3B75D760">
+          <End Role="Grupos" Type="Self.Grupos" Multiplicity="0..1" />
+          <End Role="Mural" Type="Self.Mural" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupos">
+              <PropertyRef Name="idGrupo" />
+            </Principal>
+            <Dependent Role="Mural">
+              <PropertyRef Name="id_grupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GrupoUtil__id_us__4222D4EF">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="GrupoUtilizadores" Type="Self.GrupoUtilizadores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="GrupoUtilizadores">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mural__id_utiliz__44FF419A">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="0..1" />
+          <End Role="Mural" Type="Self.Mural" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Mural">
+              <PropertyRef Name="id_utilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Publicaco__id_mu__36B12243">
+          <End Role="Mural" Type="Self.Mural" Multiplicity="1" />
+          <End Role="Publicacoes" Type="Self.Publicacoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mural">
+              <PropertyRef Name="idMural" />
+            </Principal>
+            <Dependent Role="Publicacoes">
+              <PropertyRef Name="id_mural" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Perfil_Ut__id_us__403A8C7D">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Perfil_Utilizador" Type="Self.Perfil_Utilizador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Perfil_Utilizador">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Publicaco__id_us__4316F928">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Publicacoes" Type="Self.Publicacoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="IdUtilizador" />
+            </Principal>
+            <Dependent Role="Publicacoes">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RedeSocialEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comentarios" EntityType="Self.Comentarios" />
+          <EntitySet Name="Contactos" EntityType="Self.Contactos" />
+          <EntitySet Name="Grupos" EntityType="Self.Grupos" />
+          <EntitySet Name="GrupoUtilizadores" EntityType="Self.GrupoUtilizadores" />
+          <EntitySet Name="Mural" EntityType="Self.Mural" />
+          <EntitySet Name="Perfil_Utilizador" EntityType="Self.Perfil_Utilizador" />
+          <EntitySet Name="Publicacoes" EntityType="Self.Publicacoes" />
+          <EntitySet Name="Utilizadores" EntityType="Self.Utilizadores" />
+          <AssociationSet Name="FK__Comentari__idpub__38996AB5" Association="Self.FK__Comentari__idpub__38996AB5">
+            <End Role="Publicacoes" EntitySet="Publicacoes" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__idUti__440B1D61" Association="Self.FK__Comentari__idUti__440B1D61">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Contactos__id_pe__32E0915F" Association="Self.FK__Contactos__id_pe__32E0915F">
+            <End Role="Perfil_Utilizador" EntitySet="Perfil_Utilizador" />
+            <End Role="Contactos" EntitySet="Contactos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grupos__id_criad__412EB0B6" Association="Self.FK__Grupos__id_criad__412EB0B6">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Grupos" EntitySet="Grupos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GrupoUtil__id_gr__34C8D9D1" Association="Self.FK__GrupoUtil__id_gr__34C8D9D1">
+            <End Role="Grupos" EntitySet="Grupos" />
+            <End Role="GrupoUtilizadores" EntitySet="GrupoUtilizadores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mural__id_grupo__3B75D760" Association="Self.FK__Mural__id_grupo__3B75D760">
+            <End Role="Grupos" EntitySet="Grupos" />
+            <End Role="Mural" EntitySet="Mural" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GrupoUtil__id_us__4222D4EF" Association="Self.FK__GrupoUtil__id_us__4222D4EF">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="GrupoUtilizadores" EntitySet="GrupoUtilizadores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mural__id_utiliz__44FF419A" Association="Self.FK__Mural__id_utiliz__44FF419A">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Mural" EntitySet="Mural" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Publicaco__id_mu__36B12243" Association="Self.FK__Publicaco__id_mu__36B12243">
+            <End Role="Mural" EntitySet="Mural" />
+            <End Role="Publicacoes" EntitySet="Publicacoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Perfil_Ut__id_us__403A8C7D" Association="Self.FK__Perfil_Ut__id_us__403A8C7D">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Perfil_Utilizador" EntitySet="Perfil_Utilizador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Publicaco__id_us__4316F928" Association="Self.FK__Publicaco__id_us__4316F928">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Publicacoes" EntitySet="Publicacoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RedeSocialModelStoreContainer" CdmEntityContainer="RedeSocialEntities">
+          <EntitySetMapping Name="Comentarios">
+            <EntityTypeMapping TypeName="RedeSocialModel.Comentarios">
+              <MappingFragment StoreEntitySet="Comentarios">
+                <ScalarProperty Name="idComentario" ColumnName="idComentario" />
+                <ScalarProperty Name="idpublicacao" ColumnName="idpublicacao" />
+                <ScalarProperty Name="idUtilizador" ColumnName="idUtilizador" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="dataComentario" ColumnName="dataComentario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contactos">
+            <EntityTypeMapping TypeName="RedeSocialModel.Contactos">
+              <MappingFragment StoreEntitySet="Contactos">
+                <ScalarProperty Name="id_contacto" ColumnName="id_contacto" />
+                <ScalarProperty Name="id_perfilUser" ColumnName="id_perfilUser" />
+                <ScalarProperty Name="tlm" ColumnName="tlm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grupos">
+            <EntityTypeMapping TypeName="RedeSocialModel.Grupos">
+              <MappingFragment StoreEntitySet="Grupos">
+                <ScalarProperty Name="idGrupo" ColumnName="idGrupo" />
+                <ScalarProperty Name="id_criador" ColumnName="id_criador" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="desc" ColumnName="desc" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="data_criacao" ColumnName="data_criacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GrupoUtilizadores">
+            <EntityTypeMapping TypeName="RedeSocialModel.GrupoUtilizadores">
+              <MappingFragment StoreEntitySet="GrupoUtilizadores">
+                <ScalarProperty Name="id_grupo" ColumnName="id_grupo" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="data" ColumnName="data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mural">
+            <EntityTypeMapping TypeName="RedeSocialModel.Mural">
+              <MappingFragment StoreEntitySet="Mural">
+                <ScalarProperty Name="idMural" ColumnName="idMural" />
+                <ScalarProperty Name="id_utilizador" ColumnName="id_utilizador" />
+                <ScalarProperty Name="id_grupo" ColumnName="id_grupo" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Perfil_Utilizador">
+            <EntityTypeMapping TypeName="RedeSocialModel.Perfil_Utilizador">
+              <MappingFragment StoreEntitySet="Perfil_Utilizador">
+                <ScalarProperty Name="id_Perfil" ColumnName="id_Perfil" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="genero" ColumnName="genero" />
+                <ScalarProperty Name="dataNasc" ColumnName="dataNasc" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="website" ColumnName="website" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Publicacoes">
+            <EntityTypeMapping TypeName="RedeSocialModel.Publicacoes">
+              <MappingFragment StoreEntitySet="Publicacoes">
+                <ScalarProperty Name="id_publicacao" ColumnName="id_publicacao" />
+                <ScalarProperty Name="id_mural" ColumnName="id_mural" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="desc" ColumnName="desc" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="data_publicacoes" ColumnName="data_publicacoes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utilizadores">
+            <EntityTypeMapping TypeName="RedeSocialModel.Utilizadores">
+              <MappingFragment StoreEntitySet="Utilizadores">
+                <ScalarProperty Name="IdUtilizador" ColumnName="IdUtilizador" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="email_confirmacao" ColumnName="email_confirmacao" />
+                <ScalarProperty Name="pass" ColumnName="pass" />
+                <ScalarProperty Name="data_registo" ColumnName="data_registo" />
+                <ScalarProperty Name="tipo_utilizador" ColumnName="tipo_utilizador" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
